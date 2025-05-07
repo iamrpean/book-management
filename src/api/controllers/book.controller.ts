@@ -20,7 +20,6 @@ export const createBook = async (
         const book = await createBookService(req.body);
         return res.status(201).json(book);
     } catch (err: any) {
-        // validasi mongoose
         if (err.name === 'ValidationError') {
             const message = Object.values(err.errors).map((e: any) => e.message).join(', ');
             return next(new ApiError(400, message));
@@ -49,7 +48,7 @@ export const getAllBooks = async (
     req: Request<{}, {}, {}, GetBooksQuery>,
     res: Response<BookListResponse>,
     next: NextFunction
-): Promise<Response<BookListResponse>> => {
+): Promise<Response<BookListResponse> | void> => {
     try {
         const page = parseInt(req.query.page || '1', 10);
         const limit = parseInt(req.query.limit || '10', 10);
@@ -58,7 +57,7 @@ export const getAllBooks = async (
         const result = await getAllBooksService(page, limit, search);
         return res.status(200).json(result);
     } catch (err) {
-        next(err);
+        return next(err);
     }
 };
 
