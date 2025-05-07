@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: node-ts-book-management
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # volumes:
+      # - .:/app
+      # - /app/node_modules
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      - MONGO_URL=mongodb://mongo:27017/book-management
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    container_name: mongo-db
+    image: mongo:7
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
