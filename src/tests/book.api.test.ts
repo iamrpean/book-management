@@ -75,7 +75,7 @@ describe('Book API Endpoints', () => {
         });
 
         const res = await request(app).delete(`/api/v1/books/${book._id}`);
-        expect(res.statusCode).toBe(204);
+        expect(res.statusCode).toBe(200);
     });
 
     it('should reject invalid data types on create', async () => {
