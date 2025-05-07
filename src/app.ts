@@ -3,8 +3,14 @@ import mongoose from 'mongoose';
 
 import bookRoutes from './api/routes/book.routes';
 import { errorHandler } from './middlewares/error.middleware';
+import { rateLimiter } from './middlewares/rateLimiter.middleware';
+import { inputSanitizer } from './middlewares/sanitizer.middleware';
 
 const app = express();
+
+// Security middlewares
+app.use(rateLimiter);       
+app.use(inputSanitizer); 
 
 app.use(express.json());
 

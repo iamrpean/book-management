@@ -13,4 +13,8 @@ const bookSchema = new Schema<IBookDocument>({
     stock: { type: Number, required: true }
 });
 
+bookSchema.index({ title: 'text', author: 'text' });
+bookSchema.index({ genres: 1 });
+bookSchema.index({ createdAt: -1 }); 
+
 export const BookModel = model<IBookDocument>('Book', bookSchema);

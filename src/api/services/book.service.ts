@@ -15,7 +15,7 @@ export const getBookByIdService = async (id: string): Promise<BookResponse | nul
     if (!mongoose.Types.ObjectId.isValid(id)) return null;
 
     const book = await BookModel.findById(id).lean().select('-__v');
-    return book ? toBookResponse(book) : null; 
+    return book ? toBookResponse(book) : null;
 };
 
 export const getAllBooksService = async (
@@ -23,6 +23,7 @@ export const getAllBooksService = async (
     limit: number,
     search?: string
 ): Promise<BookListResponse> => {
+    limit = Math.min(Math.max(limit, 1), 100);
     const skip = (page - 1) * limit;
 
     const query = search
@@ -48,12 +49,13 @@ export const getAllBooksService = async (
     const totalPages = Math.ceil(totalBooks / limit);
 
     return {
-        page, 
+        page,
         totalPages,
         totalBooks,
         books: books.map(toBookResponse)
     };
 };
+
 
 export const updateBookByIdService = async (
     id: string,
@@ -66,7 +68,7 @@ export const updateBookByIdService = async (
         lean: true
     }).select('-__v');
 
-    return updated ? toBookResponse(updated) : null; 
+    return updated ? toBookResponse(updated) : null;
 };
 
 export const deleteBookByIdService = async (id: string): Promise<boolean> => {
