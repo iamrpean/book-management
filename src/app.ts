@@ -1,5 +1,8 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import mongoose from 'mongoose';
+
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './docs/swagger';
 
 import bookRoutes from './api/routes/book.routes';
 import { errorHandler } from './middlewares/error.middleware';
@@ -17,11 +20,11 @@ app.use(express.json());
 // Routes Book
 app.use('/api/v1/books', bookRoutes);
 
+if (process.env.NODE_ENV === 'development') {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello Worldd');
-});
-
+// Test running app
 app.get('/ping', (_req, res) => {
   const mongoStatus = mongoose.connection.readyState;
 
