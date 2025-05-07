@@ -10,8 +10,6 @@ export const errorHandler = (
     const status = err instanceof ApiError ? err.statusCode : 500;
     const message = err.message || 'Internal Server Error';
 
-    console.error('[ERROR]', err);
-
     res.status(status).json({
         message,
         ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })

@@ -20,6 +20,22 @@ services:
       - mongo
     restart: unless-stopped
 
+  test:
+    container_name: node-ts-book-test
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=test
+      - MONGO_URL=mongodb://mongo:27017/book-api-test
+    depends_on:
+      - mongo
+    command: npm run test
+    
   mongo:
     container_name: mongo-db
     image: mongo:7
