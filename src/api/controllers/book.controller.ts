@@ -85,7 +85,7 @@ export const deleteBookById = async (
         const success = await deleteBookByIdService(req.params.id);
         if (!success) throw new ApiError(404, 'Book not found or invalid ID');
 
-        return res.status(204).send();
+        return res.status(200).json({ message: 'Book deleted successfully' });
     } catch (err) {
         next(err);
     }
